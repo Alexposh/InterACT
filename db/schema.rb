@@ -10,11 +10,83 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_09_121716) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_09_174507) do
+  create_table "comment_reactions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "comment_id", null: false
+    t.integer "reaction_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_comment_reactions_on_comment_id"
+    t.index ["reaction_id"], name: "index_comment_reactions_on_reaction_id"
+    t.index ["user_id"], name: "index_comment_reactions_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "post_comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_comments_on_post_id"
+    t.index ["user_id"], name: "index_post_comments_on_user_id"
+  end
+
+  create_table "post_reactions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_reactions_on_post_id"
+    t.index ["user_id"], name: "index_post_reactions_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
-    t.string "content"
+    t.text "title"
+    t.text "content"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_roles", force: :cascade do |t|
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.text "name"
+    t.text "email"
+    t.text "password"
+    t.integer "user_roles_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_roles_id"], name: "index_users_on_user_roles_id"
+  end
+
+  add_foreign_key "comment_reactions", "comments"
+  add_foreign_key "comment_reactions", "reactions"
+  add_foreign_key "comment_reactions", "users"
+  add_foreign_key "comments", "users"
+  add_foreign_key "post_comments", "posts"
+  add_foreign_key "post_comments", "users"
+  add_foreign_key "post_reactions", "posts"
+  add_foreign_key "post_reactions", "users"
+  add_foreign_key "posts", "users"
+  add_foreign_key "users", "user_roles", column: "user_roles_id"
 end
