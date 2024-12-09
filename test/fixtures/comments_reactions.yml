@@ -3,9 +3,9 @@
 one:
   user: one
   user_comment: one
-  user_post: one
+  reaction: one
 
 two:
   user: two
   user_comment: two
-  user_post: two
+  reaction: two

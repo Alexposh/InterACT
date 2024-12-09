@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users
-  # get 'posts/new'
-  # get 'posts/create'
-  # get 'posts/update'
-  # get 'posts/edit'
-  # get 'posts/destroy'
-  # get 'posts/index'
-  # get 'posts/show'
+  resources :user_posts
+  resources :user_comments
+  resources :user_roles
+  resources :user
+  resources :post_comments
+  resources :post_reactions
+  resources :reactions
+  resources :comments_reactions
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
